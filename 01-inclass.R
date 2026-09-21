@@ -24,7 +24,7 @@ library(tidyverse)
 # Modify the code below such that the grade shows in increasing order
 # and all category labels start with a capital letter
 
-install.packages("flextable")
+#install.packages("flextable")
 library(flextable)
 
 yrbss$Grade <- yrbss$grade
@@ -63,8 +63,6 @@ aggregate(physically_active_7d ~ Grade + Gender, mean, data = yrbss) |>
     x = "Grade Level",
     y = "Mean Number of Physically Active Days per Week"
   )
-...
-
 
 # Create a plot that shows the relationship betwen physical activity and bmi
 # among female students in grade 12 
@@ -77,9 +75,10 @@ yrbss %>%
   filter(Grade == 12, Gender == "Female") %>%
   ggplot(aes(physically_active_7d, bmi, group = physically_active_7d)) +
   geom_boxplot() +
+  scale_x_continuous(breaks = seq(0, 7, by = 1)) +
   theme_classic() +
   labs(
-    title = "Relationship between BMI and Number of Physically Active Days per Week\nAmong Females in Grade 12",
+    title = "Relationship between BMI and Number of Physically Active Days per Week\nAmong Female Students in Grade 12",
     x = "Number of Physically Active Days per Week",
     y = "BMI"
   ) +
