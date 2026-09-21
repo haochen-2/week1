@@ -1,1 +1,1 @@
-This is just a test README
+This is the assignment for week 1.
