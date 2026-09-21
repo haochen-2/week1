@@ -70,9 +70,8 @@ aggregate(physically_active_7d ~ Grade + Gender, mean, data = yrbss) |>
 # among female students in grade 12 
 # Ensure that the figure is clearly labeled and includes an appropriate legend
 
-yrbss <- yrbss%>%
+yrbss <- yrbss %>%
   mutate(bmi = weight/(height^2))
-bmi_mean <- aggregate(bmi ~ physically_active_7d, mean, data = yrbss)
 
 yrbss %>%
   filter(Grade == 12, Gender == "Female") %>%
