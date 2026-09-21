@@ -30,6 +30,10 @@ library(flextable)
 yrbss$Grade <- yrbss$grade
 yrbss$Gender <- yrbss$gender
 
+yrbss <- yrbss %>% mutate(Grade = fct_relevel(Grade, "9", "10", "11", "12", "other"))
+yrbss <- yrbss %>% mutate(Grade = fct_recode(Grade, "Other" = "other"))
+yrbss <- yrbss %>% mutate(Gender = fct_recode(Gender, "Female" = "female", "Male" = "male"))
+
 z <- summarizor(
   yrbss[c("Grade", "Gender")],
   overall_label = NULL
@@ -48,9 +52,17 @@ ft_1
 # no one correct way to do this
 # Ensure that the figure is clearly labeled and includes an appropriate legend
 
-aggregate(xxx) |>
-  ggplot(aes(xxx)) + 
-  geom_line()
+aggregate(physically_active_7d ~ Gender, mean, data = yrbss) 
+
+aggregate(physically_active_7d ~ Grade + Gender, mean, data = yrbss) |>
+  ggplot(aes(Grade, physically_active_7d, color = Gender, group = Gender)) + 
+  geom_line()+
+  theme_classic() +
+  labs(
+    title = "Mean Number of Physically Active Days per Week by Grade Level",
+    x = "Grade Level",
+    y = "Mean Number of Physically Active Days per Week"
+  )
 ...
 
 
@@ -58,6 +70,22 @@ aggregate(xxx) |>
 # among female students in grade 12 
 # Ensure that the figure is clearly labeled and includes an appropriate legend
 
+yrbss <- yrbss%>%
+  mutate(bmi = weight/(height^2))
+bmi_mean <- aggregate(bmi ~ physically_active_7d, mean, data = yrbss)
 
+yrbss %>%
+  filter(Grade == 12, Gender == "Female") %>%
+  ggplot(aes(physically_active_7d, bmi, group = physically_active_7d)) +
+  geom_boxplot() +
+  theme_classic() +
+  labs(
+    title = "Relationship between BMI and Number of Physically Active Days per Week\nAmong Females in Grade 12",
+    x = "Number of Physically Active Days per Week",
+    y = "BMI"
+  ) +
+  theme(
+    plot.title = element_text(hjust = 0.5)
+  )
 
 # Push your completed code to your GitHub repository
